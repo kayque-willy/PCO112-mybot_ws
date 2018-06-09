@@ -1,0 +1,9 @@
+<launch>
+   
+    <node pkg="mybot_control" type="pubvel" name="pubvel" respawn="true" />
+    
+    <node pkg="mybot_control" type="subpose" name="subpose" output="screen" />
+       
+    <node pkg="mybot_control" type="scansub" name="scansub" output="screen" />  
+    
+</launch>

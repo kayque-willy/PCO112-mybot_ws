@@ -4,13 +4,13 @@
 <!--Arquivo de plugins de controle e sensores com os topicos-->
 
 <!--
-	Plugin de comando de velocidade angular e linear do bot
+	Plugin de topico de publicacao de velocidade angular e linear /cmd_vel e do topico da posicao /odom
 -->
   <gazebo>
     <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <legacyMode>false</legacyMode>
       <alwaysOn>true</alwaysOn>
-      <updateRate>20</updateRate>
+      <updateRate>2</updateRate>
       <leftJoint>left_wheel_hinge</leftJoint>
       <rightJoint>right_wheel_hinge</rightJoint>
       <wheelSeparation>0.4</wheelSeparation>
@@ -36,17 +36,17 @@
   </gazebo>
   
 <!--
-  Plugin dos lasers
+  Plugin dos lasers do topico /mybot/laser/scan
 -->
   <gazebo reference="hokuyo">
 	<sensor type="ray" name="head_hokuyo_sensor">
 		<pose>0 0 0 0 0 0</pose>
 		<visualize>true</visualize>
-		<update_rate>40</update_rate>
+		<update_rate>2</update_rate>
 		<ray>
 			<scan>
 				<horizontal>
-				<samples>5</samples>
+				<samples>1</samples>
 				<resolution>1</resolution>
 				<min_angle>-1.570796</min_angle>
 				<max_angle>1.570796</max_angle>

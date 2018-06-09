@@ -18,9 +18,15 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+#Executaveis
 add_executable(scansub src/scansub.cpp)
+add_executable(pubvel src/pubvel.cpp)
+add_executable(subpose src/subpose.cpp)
 
+#Bibliotecas
 target_link_libraries(scansub ${catkin_LIBRARIES})
+target_link_libraries(pubvel ${catkin_LIBRARIES})
+target_link_libraries(subpose ${catkin_LIBRARIES})
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

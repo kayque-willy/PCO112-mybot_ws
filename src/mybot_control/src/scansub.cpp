@@ -4,11 +4,11 @@
 
 void laserScanCallback(const sensor_msgs::LaserScan& msg){
 	std::ostringstream oss;
-	oss << "Ranges = [ ";
+	oss << "\nSensores ( ";
 	for (int i = 0; i < msg.ranges.size(); i++){
-		oss << msg.ranges[i] << " ";
+		oss << "[" << i << "]: " << msg.ranges[i] << " ";
 	}
-	oss << " ];";
+	oss << " );";
 	ROS_INFO_STREAM( oss.str() );
 }
 
