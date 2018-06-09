@@ -17,7 +17,7 @@ int main(int argc, char **argv){
 	ros::NodeHandle nh;
 	
 	// Criar um objeto subscriber.
-	ros::Subscriber odomSub = nh.subscribe("/odom", 1000, &odomCallback);
+	ros::Subscriber odomSub = nh.subscribe("/mybot/odom", 1000, &odomCallback);
 
 	ros::spin();
 	return 0;

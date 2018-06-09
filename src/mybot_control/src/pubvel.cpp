@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "publish_velocity");
 	ros::NodeHandle nh;
 	
-	ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 10);
+	ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/mybot/cmd_vel", 10);
 
 	srand(time(0));
 
