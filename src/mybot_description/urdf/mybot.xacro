@@ -6,9 +6,11 @@
   <xacro:include filename="$(find mybot_description)/urdf/materials.xacro" />
   <xacro:include filename="$(find mybot_description)/urdf/macros.xacro" />
   
-  <!--
+  <!--Arquivo de parametros de montagem do bot-->
+  
+<!--
     Chassis
-  -->
+-->
   <link name='chassis'>
     <pose>0 0 0.1 0 0 0</pose>
     <inertial>

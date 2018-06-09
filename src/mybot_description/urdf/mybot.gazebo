@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <robot>
+	
+<!--Arquivo de plugins de controle e sensores com os topicos-->
 
+<!--
+	Plugin de comando de velocidade angular e linear do bot
+-->
   <gazebo>
     <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <legacyMode>false</legacyMode>
