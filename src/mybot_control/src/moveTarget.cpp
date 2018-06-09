@@ -52,8 +52,7 @@ int main(int argc, char **argv){
 			msg.linear.x = (dist > 1? max_vel : max_vel/2.0);
 			msg.angular.z = (fabs(z) > 0.2 ? z : 0);
 			
-			ROS_INFO_STREAM("\nTheta: " << theta << " Angulo atual: " << curDir);
-			ROS_INFO_STREAM("\nDistancia: " << dist << " Direcao: " << z << " Velocidade: " << msg.linear.x);
+			ROS_INFO_STREAM("\nTheta: " << theta << " Angulo atual: " << curDir << "\nDistancia: " << dist << " Direcao: " << z << " Velocidade: " << msg.linear.x);
 			
 			pub.publish(msg);
 			rate.sleep();
