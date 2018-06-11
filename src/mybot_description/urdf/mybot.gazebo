@@ -15,6 +15,9 @@
       <wheelDiameter>0.1</wheelDiameter>
       <torque>20</torque>
       <commandTopic>/mybot/cmd_vel</commandTopic>
+<!--
+      <commandTopic>/turtle1/cmd_vel</commandTopic>
+-->
       <odometryTopic>/mybot/odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
       <robotBaseFrame>chassis</robotBaseFrame>

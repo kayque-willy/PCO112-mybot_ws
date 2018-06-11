@@ -9,6 +9,8 @@ project(mybot_control)
 find_package(catkin REQUIRED COMPONENTS
 	roscpp
 	sensor_msgs
+	image_transport
+	cv_bridge
 )
 
 catkin_package()
@@ -23,12 +25,14 @@ add_executable(scansub src/scansub.cpp)
 add_executable(pubvel src/pubvel.cpp)
 add_executable(subpose src/subpose.cpp)
 add_executable(moveTarget src/moveTarget.cpp)
+add_executable(camerasub src/camerasub.cpp)
 
 #Bibliotecas
 target_link_libraries(scansub ${catkin_LIBRARIES})
 target_link_libraries(pubvel ${catkin_LIBRARIES})
 target_link_libraries(subpose ${catkin_LIBRARIES})
 target_link_libraries(moveTarget ${catkin_LIBRARIES})
+target_link_libraries(camerasub ${catkin_LIBRARIES})
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
