@@ -3,9 +3,7 @@
 	
 <!--Arquivo de plugins de controle e sensores com os topicos-->
 
-<!--
-	Plugin de topico de publicacao de velocidade angular e linear /cmd_vel e do topico da posicao /odom
--->
+<!--Plugin de topico de publicacao de velocidade angular e linear /mybot/cmd_vel e do topico da posicao /mybot/odom-->
   <gazebo>
     <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <legacyMode>false</legacyMode>
@@ -35,9 +33,7 @@
     <material>Gazebo/Blue</material>
   </gazebo>
   
-<!--
-  Plugin dos lasers do topico /mybot/laser/scan
--->
+<!--Plugin dos lasers do topico /mybot/laser/scan-->
   <gazebo reference="hokuyo">
 	<sensor type="ray" name="head_hokuyo_sensor">
 		<pose>0 0 0 0 0 0</pose>
@@ -66,6 +62,40 @@
 		<plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
 			<topicName>/mybot/laser/scan</topicName>
 			<frameName>hokuyo</frameName>
+		</plugin>
+	</sensor>
+  </gazebo>
+  
+<!--Plugin da camera no topico mybot/camera1-->
+  <gazebo reference="camera">
+	<material>Gazebo/Green</material>
+	<sensor type="camera" name="camera1">
+		<update_rate>30.0</update_rate>
+		<camera name="head">
+			<horizontal_fov>1.3962634</horizontal_fov>
+			<image>
+				<width>800</width>
+				<height>800</height>
+				<format>R8G8B8</format>
+			</image>
+			<clip>
+				<near>0.02</near>
+				<far>300</far>
+			</clip>
+		</camera>
+		<plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+			<alwaysOn>true</alwaysOn>
+			<updateRate>0.0</updateRate>
+			<cameraName>mybot/camera1</cameraName>
+			<imageTopicName>image_raw</imageTopicName>
+			<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+			<frameName>camera</frameName>
+			<hackBaseline>0.07</hackBaseline>
+			<distortionK1>0.0</distortionK1>
+			<distortionK2>0.0</distortionK2>
+			<distortionK3>0.0</distortionK3>
+			<distortionT1>0.0</distortionT1>
+			<distortionT2>0.0</distortionT2>
 		</plugin>
 	</sensor>
   </gazebo>
