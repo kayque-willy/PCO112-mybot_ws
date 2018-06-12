@@ -12,12 +12,14 @@ double velX = 0, velZ = 0;
 int circuloEscolhido;
 bool encontrou = false;
 
+//Gira o carrinho para a direita para procurar circulos
 void iniciarProcura(){
 	ROS_INFO_STREAM("Nenhum circulo encontrado, procurando...");
 	velZ = 0.15;
 	encontrou = false;
 }
 
+//Se encontrar um circulo da um break na rotacao, o valor negativo e por causa da inercia
 void finalizarProcura(){
 	ROS_INFO_STREAM("Circulo encontrado!");
 	velZ = -0.15;
@@ -38,37 +40,58 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg){
 		// Aplica a Hough Transform para encontrar circulos de gray para o vetor circles
 		cv::HoughCircles( gray, circles, CV_HOUGH_GRADIENT, 1, 30, 200, 50, 0, 0 );
 		
-		//Verifica se encontrou o circulo
+		//Com a funcao HoughCircles sao adicionados os circulos encontrados da imagem no vetor circles
+		//Verifica se encontrou o circulo através da variavel de controle encontrou
 		if(encontrou == false){
+			//Se o vetor estiver vazio, gira o carrinho para procurar circulos no ambiente
 			if(circles.size() == 0){
+				//Gira o carro para direita enquanto nao encontrar nenhum circulo
 				iniciarProcura();
 			}else{
+				//Caso encontre um circulo, da um break no giro
 				finalizarProcura();
 			}
+			//Da um break na velocidade linear sempre que nao tiver algum circulo na tela
 			velX = 0;	
 		}else{
+			//Este IF interno e apenas para evitar acessar o vetor vazio
+			//caso o circulo nao exista e a variavel de controle ainda esteja verdadeira
 			if(circles.size() != 0){
-				int radius = cvRound(circles[circuloEscolhido][2]); 
-				if(radius < 230){
+				//Aqui e feita a movimentacao em direcao ao circulo
+				//As informacoes do vetor circles sao: 
+				//raio: (circles[i][0]), ponto cartesiano X: (circles[i][1]), ponto cartesiano Y: (circles[i][2])
+				int raio = cvRound(circles[circuloEscolhido][2]); 
+				int pX = cvRound(circles[circuloEscolhido][0]);
+				
+				//Vai em direcao ao circulo de acordo com o tamanho do raio
+				//O valor 230 foi escolhido por corresponder a uma esfera que esta proxima a camera
+				//Enquanto o raio nao for este valor arbitrario, move o carrinho em direcao do circulo
+				if(raio < 230){
 					ROS_INFO_STREAM("Circulo encontrado, indo em direcao.");
+					//Faz as correcoes para manter o carrinho direcionado para o ciculo
+					//Os valores 440 e 370 tambem sao arbitrarios e correspondem a posicao horizontal do circulo na tela
+					//Se o circulo se encontra entre essa faixa de valores ele esta proximo ao centro da tela
 					//Correcao para a direita
-					if(cvRound(circles[circuloEscolhido][0])>440){
+					if(pX > 440){
 						velZ = 0.1;
 						velX = 0.1;
 					//Correcao para esquerda
-					}else if(cvRound(circles[circuloEscolhido][0])<370){
+					}else if(pX < 370){
 						velZ = -0.1;
 						velX = 0.1;
 					//Segue reto
 					}else{
 						velZ = 0;
-						velX = 1.5;
+						velX = 0.2;
 					}
 				}else{
 					ROS_INFO_STREAM("Circulo encontrado, chegou.");
 					velZ = 0;
 					velX = 0;
 				}
+			//Este IF interno e apenas para evitar acessar o vetor vazio 
+			//caso o circulo nao exista e a variavel de controle ainda esteja verdadeira
+			//Se ocorrer essa inconsistencia, inicia a procura novamente
 			}else{
 				iniciarProcura();
 			}
@@ -79,11 +102,11 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg){
 			//Ponto central do circulo
 			cv::Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
 			//Raio do circulo
-			int radius = cvRound(circles[i][2]);     
+			int raio = cvRound(circles[i][2]);     
 			//Desenha o circulo em src para exibicao na tela
 			cv::circle(src, center, 3, cv::Scalar(0,255,0), -1, 8, 0 );// circulo verde pequeno do centro     
-			cv::circle(src, center, radius, cv::Scalar(0,0,255), 3, 8, 0 );// circulo vermelho ao redor
-			ROS_INFO_STREAM("\nCirculo: " << (i + 1) << "\nCentro : " << center << "\nRaio : [" << radius << "]" << std::endl);
+			cv::circle(src, center, raio, cv::Scalar(0,0,255), 3, 8, 0 );// circulo vermelho ao redor
+			ROS_INFO_STREAM("\nCirculo: " << (i + 1) << "\nCentro : " << center << "\nRaio : [" << raio << "]" << std::endl);
 		}
 		
 		// Mostra os resultados no visualizador de imagem
