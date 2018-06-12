@@ -26,6 +26,7 @@ add_executable(pubvel src/pubvel.cpp)
 add_executable(subpose src/subpose.cpp)
 add_executable(moveTarget src/moveTarget.cpp)
 add_executable(camerasub src/camerasub.cpp)
+add_executable(cameraFollow src/cameraFollow.cpp)
 
 #Bibliotecas
 target_link_libraries(scansub ${catkin_LIBRARIES})
@@ -33,6 +34,7 @@ target_link_libraries(pubvel ${catkin_LIBRARIES})
 target_link_libraries(subpose ${catkin_LIBRARIES})
 target_link_libraries(moveTarget ${catkin_LIBRARIES})
 target_link_libraries(camerasub ${catkin_LIBRARIES})
+target_link_libraries(cameraFollow ${catkin_LIBRARIES})
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
