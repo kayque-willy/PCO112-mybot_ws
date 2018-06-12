@@ -39,20 +39,30 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg){
 		cv::HoughCircles( gray, circles, CV_HOUGH_GRADIENT, 1, 30, 200, 50, 0, 0 );
 		
 		//Verifica se encontrou o circulo
-		if(encontrou == true){
+		if(encontrou == false){
+			if(circles.size() == 0){
+				iniciarProcura();
+			}else{
+				finalizarProcura();
+			}
+			velX = 0;	
+		}else{
 			if(circles.size() != 0){
 				int radius = cvRound(circles[circuloEscolhido][2]); 
 				if(radius < 230){
 					ROS_INFO_STREAM("Circulo encontrado, indo em direcao.");
+					//Correcao para a direita
 					if(cvRound(circles[circuloEscolhido][0])>440){
 						velZ = 0.1;
 						velX = 0.1;
+					//Correcao para esquerda
 					}else if(cvRound(circles[circuloEscolhido][0])<370){
 						velZ = -0.1;
 						velX = 0.1;
+					//Segue reto
 					}else{
 						velZ = 0;
-						velX = 2;
+						velX = 1.5;
 					}
 				}else{
 					ROS_INFO_STREAM("Circulo encontrado, chegou.");
@@ -60,18 +70,8 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg){
 					velX = 0;
 				}
 			}else{
-				encontrou = false;	
-			}
-		}else{
-			if(circles.size() == 0){
 				iniciarProcura();
-			}else{
-				finalizarProcura();
-				for( size_t i = 0; i < circles.size(); i++ ){
-					circuloEscolhido = i;
-				}
 			}
-			velX = 0;
 		}
 		
 		// Desenha os circulos detectados em src 
@@ -119,5 +119,6 @@ int main(int argc, char **argv){
 	}
 	
 	cv::destroyWindow("View");
+	
 	return 0;
 }

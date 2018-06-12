@@ -2,7 +2,7 @@
 <launch>
   <arg name="gui" default="true"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find mybot_gazebo)/worlds/mybot.world"/>
+    <arg name="world_name" value="$(find mybot_gazebo)/worlds/mybot_ball.world"/>
     <arg name="gui" value="$(arg gui)"/>
   </include>
   
