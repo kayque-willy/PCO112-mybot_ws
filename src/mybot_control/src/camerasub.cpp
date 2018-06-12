@@ -43,7 +43,7 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg){
 int main(int argc, char **argv){
 	ros::init(argc, argv, "camerasub");
 	ros::NodeHandle nh;
-	cv::namedWindow( "View");
+	cv::namedWindow( "View", CV_WINDOW_NORMAL);
 	cv::startWindowThread();
 	image_transport::ImageTransport it(nh);
 	image_transport::Subscriber sub = it.subscribe("/mybot/camera1/image_raw", 1, &imageCallback);

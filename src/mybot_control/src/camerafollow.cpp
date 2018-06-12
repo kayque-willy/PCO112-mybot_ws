@@ -12,10 +12,16 @@ double velX = 0, velZ = 0;
 int circuloEscolhido;
 bool encontrou = false;
 
-void procurarCirculo(){
+void iniciarProcura(){
 	ROS_INFO_STREAM("Nenhum circulo encontrado, procurando...");
 	velZ = 0.15;
 	encontrou = false;
+}
+
+void finalizarProcura(){
+	ROS_INFO_STREAM("Circulo encontrado!");
+	velZ = -0.15;
+	encontrou = true;	
 }
 
 void imageCallback(const sensor_msgs::ImageConstPtr& msg){
@@ -33,32 +39,20 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg){
 		cv::HoughCircles( gray, circles, CV_HOUGH_GRADIENT, 1, 30, 200, 50, 0, 0 );
 		
 		//Verifica se encontrou o circulo
-		if(encontrou == false){
-			if(circles.size() == 0){
-				procurarCirculo();
-			}else{
-				ROS_INFO_STREAM("Circulo encontrado!");
-				for( size_t i = 0; i < circles.size(); i++ ){
-					circuloEscolhido = i;
-				}
-				encontrou = true;
-				velZ = -0.15;
-			}
-			velX = 0;
-		}else{
+		if(encontrou == true){
 			if(circles.size() != 0){
 				int radius = cvRound(circles[circuloEscolhido][2]); 
 				if(radius < 230){
 					ROS_INFO_STREAM("Circulo encontrado, indo em direcao.");
 					if(cvRound(circles[circuloEscolhido][0])>440){
-						velZ = 0.05;
-						velX = 3;
+						velZ = 0.1;
+						velX = 0.1;
 					}else if(cvRound(circles[circuloEscolhido][0])<370){
-						velZ = -0.05;
-						velX = 3;
+						velZ = -0.1;
+						velX = 0.1;
 					}else{
 						velZ = 0;
-						velX = 10;
+						velX = 2;
 					}
 				}else{
 					ROS_INFO_STREAM("Circulo encontrado, chegou.");
@@ -68,6 +62,16 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg){
 			}else{
 				encontrou = false;	
 			}
+		}else{
+			if(circles.size() == 0){
+				iniciarProcura();
+			}else{
+				finalizarProcura();
+				for( size_t i = 0; i < circles.size(); i++ ){
+					circuloEscolhido = i;
+				}
+			}
+			velX = 0;
 		}
 		
 		// Desenha os circulos detectados em src 
@@ -104,7 +108,7 @@ int main(int argc, char **argv){
 	image_transport::ImageTransport it(nh);
 	image_transport::Subscriber sub = it.subscribe("/mybot/camera1/image_raw", 1, &imageCallback);
 	
-	ros::Rate rate(2);
+	ros::Rate rate(3);
 	while (ros::ok()){
 			ros::spinOnce();	
 			msg.linear.x = velX;
