@@ -1,0 +1,5 @@
+<launch>
+   
+    <node pkg="mybot_control" type="camerafollow" name="camerafollow" respawn="true" output="screen" />
+       
+</launch>

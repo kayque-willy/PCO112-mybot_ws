@@ -123,13 +123,13 @@ int main(int argc, char **argv){
 	geometry_msgs::Twist msg;
 	
 	//Publisher de velocidade
-    ros::Publisher pub = nh.advertise<geometry_msgs::Twist>("/mybot/cmd_vel", 10);
+    ros::Publisher pub = nh.advertise<geometry_msgs::Twist>("/navsat/vel", 10);
 	
 	//Subscribe da imagem da camera
 	cv::namedWindow("View", CV_WINDOW_NORMAL);
 	cv::startWindowThread();
 	image_transport::ImageTransport it(nh);
-	image_transport::Subscriber sub = it.subscribe("/mybot/camera1/image_raw", 1, &imageCallback);
+	image_transport::Subscriber sub = it.subscribe("/cam/camera_/image_raw", 1, &imageCallback);
 	
 	ros::Rate rate(3);
 	while (ros::ok()){
